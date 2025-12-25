@@ -6,14 +6,13 @@ import time
 import os
 import serial 
 
-# Load model và nhãn từ các file đã huấn luyện
 MODEL_PATH = "models/my_voice_model.keras"
 LABEL_PATH = "models/classes.npy"
-FS = 22050        # Sample rate
-SECONDS = 1       # Độ dài mẫu
-THRESHOLD = 0.70  # Độ tự tin
+FS = 22050        
+SECONDS = 1       
+THRESHOLD = 0.70  
 
-# --- CẤU HÌNH KẾT NỐI ESP32 (SỬA LẠI CỔNG COM CỦA BẠN) ---
+
 ESP_PORT = 'COM3'
 BAUD_RATE = 115200
 
@@ -63,7 +62,7 @@ def predict_command():
     try:
         mfcc = librosa.feature.mfcc(y=buffer, sr=FS, n_mfcc=13)
         
-        # Resize về (13, 44)
+        
         if mfcc.shape[1] < 44:
             pad = 44 - mfcc.shape[1]
             mfcc = np.pad(mfcc, ((0,0), (0,pad)), mode='constant')
@@ -72,7 +71,7 @@ def predict_command():
             
         mfcc_input = mfcc[np.newaxis, ..., np.newaxis]
 
-        # 3. Dự đoán
+        
         prediction = model.predict(mfcc_input, verbose=0)
         idx = np.argmax(prediction)
         confidence = prediction[0][idx]

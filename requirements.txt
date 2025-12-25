@@ -1,1 +1,6 @@
+tensorflow
+numpy
 scipy
+librosa
+sounddevice
+pyserial
